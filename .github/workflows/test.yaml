@@ -21,6 +21,7 @@ jobs:
       - name : run test file
         run: npm test	
   deploy:  
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: clone code on ubuntu-latest
