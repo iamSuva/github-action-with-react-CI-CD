@@ -36,6 +36,6 @@ jobs:
       - name : build project
         run: npm run build
       - name : deploy project
-        run: echo "deploy successful"				
-			
+        run: echo "deploy successful"		
+
 
