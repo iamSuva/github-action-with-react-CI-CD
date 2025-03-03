@@ -1,0 +1,81 @@
+name: Deploy React app on github pages
+# on: [push, workflow_dispatch]
+on: 
+  push:
+    branches: 
+      - main
+      - "feature/**"
+    paths-ignore:
+      -   README.md
+      -  ".github/workflows/*"
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone code on ubuntu-latest
+        uses: actions/checkout@v4
+        # run: |
+        #   echo "Cloning code on ubuntu-latest"
+        #   echo "${{toJson(github)}}"
+        #   git clone https://github.com/${{ github.repository }}.git
+      - name: install node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name : show node version
+        run: node --version
+      - name: cache installation
+        uses: actions/cache@v4
+        with:	
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}						
+      - name: install dependencies
+        run: npm ci
+      - name : run test file
+        run: npm test	
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone code on ubuntu-latest
+        uses: actions/checkout@v4
+      - name: install node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name : show node version
+        run: node --version
+      - name: cache installation
+        uses: actions/cache@v4
+        with:	
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}	
+      - name: install dependencies
+        run: npm ci
+      - name: build project
+        run: npm run build
+      - name: upload dist artifacts	
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: dist
+  deploy:  
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment: 
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name : deploy to github pages
+        id: deployment
+        uses: actions/github-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+
