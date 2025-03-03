@@ -1,4 +1,4 @@
-name: Testcase
+name: Test and deploy
 on: [push, workflow_dispatch]
 jobs:
   test:
@@ -20,5 +20,22 @@ jobs:
         run: npm ci
       - name : run test file
         run: npm test	
-
+  deploy:  
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone code on ubuntu-latest
+        uses: actions/checkout@v4
+      - name: install node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name : show node version
+        run: node --version
+      - name: install dependencies
+        run: npm ci
+      - name : build project
+        run: npm run build
+      - name : deploy project
+        run: echo "deploy successful"				
+			
 

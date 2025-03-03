@@ -14,5 +14,5 @@ test('renders h4 ', () => {
   render(<App />);
   // Check for <h4> tag
   const heading4 = screen.getByRole('heading', { level: 4 });
-  expect(heading4).not.toHaveTextContent('Learning CI-CD');
+  expect(heading4).toHaveTextContent('Learning CI-CD');
 });
