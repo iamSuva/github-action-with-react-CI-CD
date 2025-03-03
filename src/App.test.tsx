@@ -16,3 +16,9 @@ test('renders h4 ', () => {
   const heading4 = screen.getByRole('heading', { level: 4 });
   expect(heading4).toHaveTextContent('Learning CI-CD with github actions');
 });
+test('renders p ', () => {
+  render(<App />);
+  // Check for <h4> tag
+  const paragraph = screen.getByRole('paragraph');
+  expect(paragraph).toHaveTextContent('this is ci-cd basics');
+});
