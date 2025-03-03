@@ -1,0 +1,24 @@
+name: Deploy
+on: [push, workflow_dispatch]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone code on ubuntu-latest
+        uses: actions/checkout@v4
+        # run: |
+        #   echo "Cloning code on ubuntu-latest"
+        #   echo "${{toJson(github)}}"
+        #   git clone https://github.com/${{ github.repository }}.git
+      - name: install node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name : show node version
+        run: node --version
+      - name: install dependencies
+        run: npm ci
+      - name : run test file
+        run: npm test	
+
+
