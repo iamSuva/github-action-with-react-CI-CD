@@ -1,4 +1,4 @@
-name: 
+name: Sonar code analysis
 on:
   push:
     branches:
